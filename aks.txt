@@ -1,1 +1,392 @@
-36 PROGRAMS
+1)TO BLINK AN LED
+
+void setup()
+{
+  pinMode(13, OUTPUT);
+}
+
+void loop()
+{
+  digitalWrite(13, HIGH);
+  delay(2000); 
+  digitalWrite(13, LOW);
+  delay(1000); 
+}
+
+2)TRAFFIC LIGHTS
+
+void setup()
+{
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(12, OUTPUT);
+}
+
+void loop()
+{
+  digitalWrite(12, HIGH);
+  delay(4000); 
+  digitalWrite(12, LOW);
+  delay(1000);
+  
+  digitalWrite(11, HIGH);
+  delay(2000);
+  digitalWrite(11, LOW);
+  delay(1000); 
+  
+  digitalWrite(10, HIGH);
+  delay(3000); 
+  digitalWrite(10, LOW);
+  delay(1000); 
+}
+
+
+
+3A)SIMPLE PIEZO BUZZER SOUND
+
+void setup()
+{
+  pinMode(6, OUTPUT);
+}
+
+void loop()
+{
+tone(6,1000);
+delay(2000); 
+noTone(6);
+delay(1000);
+}
+
+
+3B)-SA RE GA MA PA DHA NI SA
+
+int pin=6;
+float a[8]={261.63,293.66,329.63,349.23,392.00,440.00,493.88,523.25};
+void setup()
+{
+pinMode(pin,OUTPUT);
+}
+void loop()
+{
+
+for(int i=0;i<8;i++)
+{
+tone(pin,a[i]);
+delay(500);
+noTone(pin);
+delay(100);
+}
+for(int i=7;i>=0;i--)
+{
+tone(pin,a[i]);
+delay(500);
+noTone(pin);
+delay(100);
+}
+}
+
+
+
+
+
+
+4A-INTERFACING ARDUINO WITH PUSH BUTTON TO CONTROL LED(TYPE 1)
+
+int button_status=0;
+int led=12;
+int button=6;
+void setup()
+{
+pinMode(led, OUTPUT);
+pinMode(button, INPUT);
+}
+void loop()
+{
+
+button_status=digitalRead(button);
+if(button_status==HIGH)
+{
+digitalWrite(led, HIGH);
+}
+else
+{
+digitalWrite(led, LOW);
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4B-INTERFACING ARDUINO WITH PUSH BUTTON TO CONTROL LED(TYPE 2)
+
+int button_status=0;
+int led=12;
+int button=6;
+void setup()
+{
+pinMode(led, OUTPUT);
+pinMode(button, INPUT);
+}
+void loop()
+{
+
+button_status=digitalRead(button);
+if(button_status==LOW)
+{
+digitalWrite(led, HIGH);
+}
+else
+{
+digitalWrite(led, LOW);
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5-INTERFACING ARDUINO WITH PUSH BUTTON TO CONTROL PIEZO
+
+
+
+
+
+int button_status=0;
+int piezo=13;
+int button=2;
+void setup()
+{
+pinMode(piezo, OUTPUT);
+pinMode(button, INPUT);
+}
+
+void loop()
+{
+
+button_status=digitalRead(button);
+if(button_status==HIGH)
+{
+tone(piezo, 220);
+}
+else
+{
+noTone(piezo);
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+6A)POTENTIOMETER TO CONTROL LED
+
+int sensor_value=0;
+int LED=13;
+int pot=A0;
+void setup()
+{
+  pinMode(LED, OUTPUT);
+  pinMode(pot, INPUT);
+}
+
+void loop()
+{
+  sensor_value=analogRead(pot);
+  digitalWrite(LED,HIGH);
+  delay(sensor_value);
+  digitalWrite(LED,LOW);  
+  delay(sensor_value);
+}
+  
+ 6B)POTENTIOMETER TO CONTROL PIEZO
+int sensor_value=0;
+int piezo=12;
+int pot=A0;
+void setup()
+{
+  pinMode(piezo,OUTPUT);
+  pinMode(pot, INPUT);
+}
+
+void loop()
+{
+  sensor_value=analogRead(pot);
+  tone(12,HIGH);
+  delay(sensor_value);
+  noTone(12);
+  delay(sensor_value);
+}
+  
+
+
+
+
+
+7)ULTRASONIC SENSOR
+
+
+float dcm=0;
+float din=0;
+int time=0;
+int trigpin=2;
+int echopin=3;
+
+void setup()
+{
+  pinMode(trigpin, OUTPUT);
+  pinMode(echopin, INPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  digitalWrite(trigpin, HIGH);
+  delayMicroseconds(10); // Wait for 1000 millisecond(s)
+  digitalWrite(trigpin, LOW);
+  time=pulseIn(echopin, HIGH);
+  dcm=(0.03435)*time/2.0;
+  din=dcm/2.54;
+  
+  Serial.print("Distance in cm= ");
+  Serial.println(dcm);
+  Serial.print("Distance in inch= ");
+  Serial.println(din);
+  delay(2000);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+8)ROTARY ENCODER
+
+int clk=4;
+int dt=5;
+int counter=0;
+int csclk;
+int psclk;
+string dir=” “;
+void setup()
+{
+  pinMode(clk,OUTPUT);
+  pinMode(dt,INPUT);
+  Serial.begin(9600);
+  psclk=digitalRead(clk);
+}
+
+void loop()
+{
+  csclk=digitalRead(clk);
+  if (csclk!=psclk)
+  {
+    if(digitalRead(dt)!=csclk)
+    {
+      dir="CW";
+      counter++;
+    }
+    else
+    {
+      dir="CCW";
+      counter--;
+    }
+  Serial.print("Directon:");
+  Serial.print(dir);
+  Serial.print("! value:");
+  Serial.println(counter);
+  }
+psclk=csclk;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+9)IR SENSOR
+int LED=13;
+int obstaclePin=10;
+int hasobstacle=LOW;
+
+void setup()
+{
+  pinMode(LED,OUTPUT);
+  pinMode(obstaclePin,INPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  hasobstacle=digitalRead(obstaclePin);
+  if (hasobstacle==HIGH)
+  {
+    Serial.println("Stop!!! Something is ahead");
+    digitalWrite(LED,HIGH);
+  }
+  else
+  {
+    Serial.println("Path is over");
+    digitalWrite(LED,LOW);
+  }
+delay(200);
+}
+
